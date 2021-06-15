@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/pepegodfather/pepe_protocol.git"
+    "url": "git+https://github.com/ElasticBTC-XBT/xbn_claim_reward.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pepegodfather/pepe_protocol/issues"
   },
-  "homepage": "https://github.com/pepegodfather/pepe_protocol#readme",
+  "homepage": "https://github.com/ElasticBTC-XBT/xbn_claim_reward#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.1.0",
     "@openzeppelin/contracts-ethereum-package": "^3.0.0",
