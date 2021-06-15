@@ -10,7 +10,7 @@ library Utils {
         uint256 from,
         uint256 to,
         uint256 salty
-    ) private view returns (uint256) {
+    ) public view returns (uint256) {
         uint256 seed =
             uint256(
                 keccak256(
@@ -45,13 +45,19 @@ library Utils {
     }
 
     function calculateBNBReward(
-       // uint256 _tTotal,
+        // uint256 _tTotal,
         uint256 currentBalance,
         uint256 currentBNBPool,
         uint256 winningDoubleRewardPercentage,
         uint256 _totalSupply
-        // address ofAddress
-    ) public view returns (uint256) {
+    )
+        public
+        view
+        returns (
+            // address ofAddress
+            uint256
+        )
+    {
         uint256 bnbPool = currentBNBPool;
 
         // calculate reward to send
@@ -73,7 +79,7 @@ library Utils {
     }
 
     function calculateTokenReward(
-      //  uint256 _tTotal,
+        //  uint256 _tTotal,
         uint256 currentBalance,
         uint256 currentBNBPool,
         uint256 winningDoubleRewardPercentage,

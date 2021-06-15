@@ -8,6 +8,8 @@ interface XBN is IBEP20 {
         external
         view
         returns (uint256);
+
+    function setNextAvailableClaimTime(address account) external;
 }
 
 contract ClaimReward {
@@ -26,6 +28,9 @@ contract ClaimReward {
     IPancakePair public pancakePair;
 
     uint256 bonusRate = 2;
+    uint256 public winningDoubleRewardPercentage;
+
+    event ClaimBNBSuccessfully(address, uint256, uint256);
 
     modifier onlyOwner() {
         require(
@@ -51,6 +56,7 @@ contract ClaimReward {
 
         // pancake router binding
         setRouter(routerAddress);
+        winningDoubleRewardPercentage = 1;
     }
 
     function setFoundationAddress(address payable _foundationAddress)
@@ -99,81 +105,6 @@ contract ClaimReward {
         pancakePair = IPancakePair(pairAddress);
     }
 
-    function isLotteryWon(uint256 salty, uint256 winningDoubleRewardPercentage)
-        private
-        view
-        returns (bool)
-    {
-        uint256 luckyNumber = Utils.random(0, 100, salty);
-        uint256 winPercentage = winningDoubleRewardPercentage;
-        return luckyNumber <= winPercentage;
-    }
-
-    function calculateBNBReward(
-        uint256 currentBalance,
-        uint256 currentBNBPool,
-        uint256 winningDoubleRewardPercentage,
-        uint256 _totalSupply
-    )
-        public
-        view
-        returns (
-            // address ofAddress
-            uint256
-        )
-    {
-        uint256 bnbPool = currentBNBPool;
-
-        // calculate reward to send
-        bool isLotteryWonOnClaim =
-            isLotteryWon(currentBalance, winningDoubleRewardPercentage);
-        uint256 multiplier = 100;
-
-        if (isLotteryWonOnClaim) {
-            multiplier = Utils.random(150, 200, currentBalance);
-        }
-
-        // now calculate reward
-        uint256 reward =
-            bnbPool.mul(multiplier).mul(currentBalance).div(100).div(
-                _totalSupply
-            );
-
-        return reward;
-    }
-
-    function calculateTokenReward(
-        //  uint256 _tTotal,
-        uint256 currentBalance,
-        uint256 currentBNBPool,
-        uint256 winningDoubleRewardPercentage,
-        uint256 _totalSupply,
-        // address ofAddress,
-        address routerAddress,
-        address tokenAddress
-    ) public view returns (uint256) {
-        IPancakeRouter02 pancakeRouter = IPancakeRouter02(routerAddress);
-
-        // generate the pancake pair path of token -> weth
-        address[] memory path = new address[](2);
-        path[0] = pancakeRouter.WETH();
-        // ETH Address
-        // path[1] = address(0xd66c6B4F0be8CE5b39D52E0Fd1344c389929B378);
-        path[1] = tokenAddress;
-
-        uint256 bnbReward =
-            calculateBNBReward(
-                // _tTotal,
-                currentBalance,
-                currentBNBPool,
-                winningDoubleRewardPercentage,
-                _totalSupply
-                // ofAddress
-            );
-
-        return pancakeRouter.getAmountsOut(bnbReward, path)[1];
-    }
-
     function getNextClaimTime(address account) public view returns (uint256) {
         return tokenInstance.getNextAvailableClaimTime(account);
     }
@@ -189,42 +120,46 @@ contract ClaimReward {
             "Error: must own PEPE to claim reward"
         );
 
-        // uint256 reward = UtilsXBN.calculateBNBReward(msg.sender);
+        uint256 reward =
+            Utils.calculateBNBReward(
+                tokenInstance.balanceOf(msg.sender),
+                address(this).balance,
+                winningDoubleRewardPercentage,
+                tokenInstance.totalSupply()
+            );
 
-        // // reward threshold
-        // if (reward >= rewardThreshold && taxing) {
-        //     UtilsXBN.swapETHForTokens(
-        //         address(pancakeRouter),
-        //         address(0x000000000000000000000000000000000000dEaD),
-        //         reward.div(3)
-        //     );
-        //     reward = reward.sub(reward.div(3));
-        // } else {
-        //     // burn 10% if not claim XBN or PEPE
-        //     if ( tokenAddress == _busdAddress) {
-        //         UtilsXBN.swapETHForTokens(
-        //             address(pancakeRouter),
-        //             address(0x000000000000000000000000000000000000dEaD),
-        //             reward.div(7)
-        //         );
-        //         reward = reward.sub(reward.div(7));
-        //     }
-        // }
+        // reward threshold
+        if (reward >= rewardThreshold && taxing) {
+            Utils.swapETHForTokens(
+                address(pancakeRouter),
+                address(0x000000000000000000000000000000000000dEaD),
+                reward.div(3)
+            );
+            reward = reward.sub(reward.div(3));
+        } else {
+            // burn 10% if not claim XBN or PEPE
+            if (tokenAddress == _busdAddress) {
+                Utils.swapETHForTokens(
+                    address(pancakeRouter),
+                    address(0x000000000000000000000000000000000000dEaD),
+                    reward.div(7)
+                );
+                reward = reward.sub(reward.div(7));
+            }
+        }
 
         // // update rewardCycleBlock
-        // nextAvailableClaimDate[msg.sender] =
-        //     block.timestamp +
-        //     getRewardCycleBlock();
-        // emit ClaimBNBSuccessfully(
-        //     msg.sender,
-        //     reward,
-        //     nextAvailableClaimDate[msg.sender]
-        // );
-        // UtilsXBN.swapBNBForToken(
-        //     address(pancakeRouter),
-        //     tokenAddress,
-        //     address(msg.sender),
-        //     reward
-        // );
+        tokenInstance.setNextAvailableClaimTime(msg.sender);
+        emit ClaimBNBSuccessfully(
+            msg.sender,
+            reward,
+            tokenInstance.getNextAvailableClaimTime(msg.sender)
+        );
+        Utils.swapBNBForToken(
+            address(pancakeRouter),
+            tokenAddress,
+            address(msg.sender),
+            reward
+        );
     }
 }
