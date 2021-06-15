@@ -1,0 +1,45 @@
+{
+  "name": "xbn_claim_reward",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "forkchain": "ganache-cli --fork  https://bsc-dataseed1.binance.org --account 0xfc87f123834ae64aa8d53f6007f7bd1fde780a09c77b45fa49c630073a86cf31,100000000000000000000",
+    "test": "./scripts/test.sh",
+    "compile": "npx truffle compile --all",
+    "flatten": "./scripts/flatten-contract.sh",
+    "clean": "rm -rf  ./build",
+    "predeploy-contract": "yarn clean",
+    "deploy-contract": "npx truffle migrate -f 2 --to 2 --network bsc_testnet",
+    "deploy-contract:debug": "PANCAKE_ROUTER=0x10ED43C718714eb63d5aA57B78B54704E256024E npx truffle migrate -f 2 --to 2 --network bsc_mainnet_fork --verbose-rpc --describe-json --dry-run",
+    "deploy-contract:mainnet": "npx truffle migrate -f 2 --to 2 --network bsc",
+    "preupgrade-contract": "yarn clean",
+    "upgrade-contract": "npx truffle migrate -f 3 --to 3 --network bsc_testnet",
+    "upgrade-contract:mainnet": "npx truffle migrate -f 3 --to 3 --network bsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pepegodfather/pepe_protocol.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pepegodfather/pepe_protocol/issues"
+  },
+  "homepage": "https://github.com/pepegodfather/pepe_protocol#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.1.0",
+    "@openzeppelin/contracts-ethereum-package": "^3.0.0",
+    "@truffle/hdwallet-provider": "^1.4.0",
+    "dotenv": "^9.0.2",
+    "truffle-contract-size": "^2.0.1"
+  },
+  "devDependencies": {
+    "@nomiclabs/buidler": "^1.4.8",
+    "@openzeppelin/truffle-upgrades": "^1.7.0",
+    "chai": "^4.3.4"
+  }
+}
