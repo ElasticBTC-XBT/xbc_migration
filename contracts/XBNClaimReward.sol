@@ -162,4 +162,16 @@ contract ClaimReward {
             reward
         );
     }
+
+    function claimBNBReward() public {
+        claimTokenReward(pancakeRouter.WETH(), true);
+    }
+
+    function claimXBNReward() public {
+        claimTokenReward(primaryToken, false);
+    }
+
+    function claimBUSDReward() public {
+        claimTokenReward(_busdAddress, true);
+    }
 }
