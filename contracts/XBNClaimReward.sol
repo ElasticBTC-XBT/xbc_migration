@@ -21,6 +21,7 @@ contract ClaimReward {
     address payable private foundationAddress;
     address public primaryToken;
     address public _busdAddress;
+    address constant DEAD_ADDRESS = 0x000000000000000000000000000000000000dEaD;
 
     mapping(address => mapping(address => uint256)) private _allowances;
     uint256 public rewardThreshold;
@@ -96,11 +97,10 @@ contract ClaimReward {
         pancakeRouter = IPancakeRouter02(routerAddress);
 
         address factory = pancakeRouter.factory();
-        address pairAddress =
-            IPancakeFactory(factory).getPair(
-                address(primaryToken),
-                address(pancakeRouter.WETH())
-            );
+        address pairAddress = IPancakeFactory(factory).getPair(
+            address(primaryToken),
+            address(pancakeRouter.WETH())
+        );
 
         pancakePair = IPancakePair(pairAddress);
     }
@@ -117,50 +117,52 @@ contract ClaimReward {
         );
         require(
             tokenInstance.balanceOf(msg.sender) > 0,
-            "Error: must own PEPE to claim reward"
+            "Error: must own XBN to claim reward"
         );
+        // Only claim 33% of reward pool
+        uint256 reward = Utils
+        .calculateBNBReward(
+            tokenInstance.balanceOf(msg.sender),
+            address(this).balance,
+            winningDoubleRewardPercentage,
+            tokenInstance.totalSupply()
+        ).div(3);
 
-        uint256 reward =
-            Utils.calculateBNBReward(
-                tokenInstance.balanceOf(msg.sender),
-                address(this).balance,
-                winningDoubleRewardPercentage,
-                tokenInstance.totalSupply()
-            );
-
-        // reward threshold
+        // If reward is greater than rewardThreshold and taxing, burn 30% of received reward
         if (reward >= rewardThreshold && taxing) {
-            Utils.swapETHForTokens(
-                address(pancakeRouter),
-                address(0x000000000000000000000000000000000000dEaD),
+            tokenInstance.transfer(
+                0x000000000000000000000000000000000000dEaD,
                 reward.div(3)
             );
             reward = reward.sub(reward.div(3));
         } else {
-            // burn 10% if not claim XBN or PEPE
+            // Burn 10% if claim BUSD
             if (tokenAddress == _busdAddress) {
-                Utils.swapETHForTokens(
-                    address(pancakeRouter),
-                    address(0x000000000000000000000000000000000000dEaD),
-                    reward.div(7)
+                tokenInstance.transfer(
+                    0x000000000000000000000000000000000000dEaD,
+                    reward.div(10)
                 );
-                reward = reward.sub(reward.div(7));
+                reward = reward.sub(reward.div(10));
             }
         }
 
-        // // update rewardCycleBlock
+        // Update rewardCycleBlock
         tokenInstance.setNextAvailableClaimTime(msg.sender);
         emit ClaimBNBSuccessfully(
             msg.sender,
             reward,
             tokenInstance.getNextAvailableClaimTime(msg.sender)
         );
-        Utils.swapBNBForToken(
-            address(pancakeRouter),
-            tokenAddress,
-            address(msg.sender),
-            reward
-        );
+        if (tokenAddress == _busdAddress) {
+            Utils.swapBNBForToken(
+                address(pancakeRouter),
+                tokenAddress,
+                address(msg.sender),
+                reward
+            );
+        } else {
+            tokenInstance.transfer(address(msg.sender), reward);
+        }
     }
 
     function claimBNBReward() public {
