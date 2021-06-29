@@ -43,11 +43,16 @@ module.exports = {
     },
     bsc_mainnet_fork: {
       provider: () =>
-        new HDWalletProvider(['0xfc87f123834ae64aa8d53f6007f7bd1fde780a09c77b45fa49c630073a86cf31'], "HTTP://0.0.0.0:8545"), // privatekey for: legend used tumble chase apology drastic program fringe identify match million outer
+        new HDWalletProvider(
+          [
+            "0xfc87f123834ae64aa8d53f6007f7bd1fde780a09c77b45fa49c630073a86cf31",
+          ],
+          "HTTP://0.0.0.0:8545"
+        ), // privatekey for: legend used tumble chase apology drastic program fringe identify match million outer
       network_id: 56,
       confirmations: 2,
       timeoutBlocks: 100,
-      gasPrice: 20000000000,//20gwei
+      gasPrice: 20000000000, //20gwei
     },
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -117,5 +122,8 @@ module.exports = {
   db: {
     enabled: false,
   },
-  plugins: ["truffle-contract-size"],
+  plugins: ["truffle-plugin-verify"],
+  api_keys: {
+    bscscan: process.env.ETHERSCAN_KEY,
+  },
 };

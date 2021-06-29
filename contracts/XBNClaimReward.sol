@@ -3,6 +3,10 @@ pragma experimental ABIEncoderV2;
 
 import "./lib/Utils.sol";
 
+import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-ethereum-package/contracts/utils/EnumerableSet.sol";
+
 interface XBN is IBEP20 {
     function getNextAvailableClaimTime(address account)
         external
@@ -12,77 +16,47 @@ interface XBN is IBEP20 {
     function setNextAvailableClaimTime(address account) external;
 }
 
-contract ClaimReward {
+contract ClaimReward is OwnableUpgradeSafe, ReentrancyGuardUpgradeSafe {
     using SafeMath for uint256;
 
     XBN public tokenInstance;
 
-    address private owner;
-    address payable private foundationAddress;
     address public primaryToken;
     address public _busdAddress;
     address constant DEAD_ADDRESS = 0x000000000000000000000000000000000000dEaD;
 
-    mapping(address => mapping(address => uint256)) private _allowances;
     uint256 public rewardThreshold;
     IPancakeRouter02 public pancakeRouter;
-    IPancakePair public pancakePair;
 
-    uint256 bonusRate = 2;
+    uint256 public bonusRate;
     uint256 public winningDoubleRewardPercentage;
 
     event ClaimBNBSuccessfully(address, uint256, uint256);
+    event UpdateBUSDAddress(address);
 
-    modifier onlyOwner() {
-        require(
-            msg.sender == owner,
-            "Error: Only owner can handle this operation ;)"
-        );
-        _;
-    }
-
-    constructor(
-        address _tokenInstance,
-        address payable routerAddress,
-        address payable _foundationAddress
-    ) public {
-        // set owner
-        owner = msg.sender;
-
-        // set token instance
-        setPrimaryToken(_tokenInstance);
-
-        // set foundation address
-        setFoundationAddress(_foundationAddress);
-
-        // pancake router binding
-        setRouter(routerAddress);
-        winningDoubleRewardPercentage = 1;
-    }
-
-    function setFoundationAddress(address payable _foundationAddress)
+    function initialize(address _tokenInstance, address payable routerAddress)
         public
-        onlyOwner
+        initializer
     {
-        require(
-            _foundationAddress != address(0),
-            "Error: cannot add address at NoWhere :)"
-        );
-        foundationAddress = _foundationAddress;
+        OwnableUpgradeSafe.__Ownable_init();
+        ReentrancyGuardUpgradeSafe.__ReentrancyGuard_init();
+        // Set token instance
+        setPrimaryToken(_tokenInstance);
+        // Pancake router binding
+        setRouter(routerAddress);
+        bonusRate = 2;
+        winningDoubleRewardPercentage = 1;
+        rewardThreshold = 3;
     }
 
     function setPrimaryToken(address tokenAddress) public onlyOwner {
-        // set distribution token address
+        // Set distribution token address
         require(
             tokenAddress != address(0),
             "Error: cannot add token at NoWhere :)"
         );
         tokenInstance = XBN(tokenAddress);
         primaryToken = tokenAddress;
-    }
-
-    function setOwner(address newOwner) public onlyOwner {
-        owner = newOwner;
     }
 
     function setBonusRate(uint256 _bonusRate) public onlyOwner {
@@ -95,18 +69,30 @@ contract ClaimReward {
 
     function setRouter(address payable routerAddress) public onlyOwner {
         pancakeRouter = IPancakeRouter02(routerAddress);
+    }
 
-        address factory = pancakeRouter.factory();
-        address pairAddress = IPancakeFactory(factory).getPair(
-            address(primaryToken),
-            address(pancakeRouter.WETH())
-        );
-
-        pancakePair = IPancakePair(pairAddress);
+    function setBUSDAddress(address busdAddress) public onlyOwner {
+        _busdAddress = busdAddress;
+        emit UpdateBUSDAddress(busdAddress);
     }
 
     function getNextClaimTime(address account) public view returns (uint256) {
         return tokenInstance.getNextAvailableClaimTime(account);
+    }
+
+    function currentPool() public view returns (uint256) {
+        return IBEP20(primaryToken).balanceOf(address(this));
+    }
+
+    function calculateReward(address account) public view returns (uint256) {
+        return
+            Utils
+                .calculateBNBReward(
+                tokenInstance.balanceOf(account),
+                tokenInstance.balanceOf(address(this)),
+                winningDoubleRewardPercentage,
+                tokenInstance.totalSupply()
+            ).div(3);
     }
 
     function claimTokenReward(address tokenAddress, bool taxing) private {
@@ -123,7 +109,7 @@ contract ClaimReward {
         uint256 reward = Utils
         .calculateBNBReward(
             tokenInstance.balanceOf(msg.sender),
-            address(this).balance,
+            tokenInstance.balanceOf(address(this)),
             winningDoubleRewardPercentage,
             tokenInstance.totalSupply()
         ).div(3);
@@ -154,19 +140,17 @@ contract ClaimReward {
             tokenInstance.getNextAvailableClaimTime(msg.sender)
         );
         if (tokenAddress == _busdAddress) {
-            Utils.swapBNBForToken(
+            tokenInstance.approve(address(pancakeRouter), reward);
+            Utils.swapXBNForTokens(
                 address(pancakeRouter),
                 tokenAddress,
+                primaryToken,
                 address(msg.sender),
                 reward
             );
         } else {
             tokenInstance.transfer(address(msg.sender), reward);
         }
-    }
-
-    function claimBNBReward() public {
-        claimTokenReward(pancakeRouter.WETH(), true);
     }
 
     function claimXBNReward() public {
