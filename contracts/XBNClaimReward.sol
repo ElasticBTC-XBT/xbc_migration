@@ -105,6 +105,7 @@ contract ClaimReward is OwnableUpgradeSafe, ReentrancyGuardUpgradeSafe {
             tokenInstance.balanceOf(msg.sender) > 0,
             "Error: must own XBN to claim reward"
         );
+
         // Only claim 33% of reward pool
         uint256 reward = Utils
         .calculateBNBReward(
@@ -122,13 +123,13 @@ contract ClaimReward is OwnableUpgradeSafe, ReentrancyGuardUpgradeSafe {
             );
             reward = reward.sub(reward.div(3));
         } else {
-            // Burn 10% if claim BUSD
+            // Burn 17% if claim BUSD
             if (tokenAddress == _busdAddress) {
                 tokenInstance.transfer(
                     0x000000000000000000000000000000000000dEaD,
-                    reward.div(10)
+                    reward.div(6)
                 );
-                reward = reward.sub(reward.div(10));
+                reward = reward.sub(reward.div(6));
             }
         }
 
@@ -151,13 +152,25 @@ contract ClaimReward is OwnableUpgradeSafe, ReentrancyGuardUpgradeSafe {
         } else {
             tokenInstance.transfer(address(msg.sender), reward);
         }
+
+        if (address(this).balance > 100000000000000000) {//0.1BNB
+            Utils.swapBNBForToken(
+                address(pancakeRouter),
+                tokenAddress,
+                address(this),
+                address(this).balance
+        );
     }
 
-    function claimXBNReward() public {
+    function claimXBNReward() public  payable {
+        require(msg.value >= 3000000000000000, 'Error: need 0.003BNB for claiming XBN');
+
         claimTokenReward(primaryToken, false);
     }
 
-    function claimBUSDReward() public {
+    function claimBUSDReward() public payable {
+
+        require(msg.value >= 7000000000000000, 'Error: need 0.007BNB for claiming BUSD');
         claimTokenReward(_busdAddress, true);
     }
 }
