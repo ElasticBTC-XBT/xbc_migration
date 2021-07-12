@@ -159,11 +159,16 @@ contract ClaimReward is OwnableUpgradeSafe, ReentrancyGuardUpgradeSafe {
                 tokenAddress,
                 address(this),
                 address(this).balance
-        );
+            );
+        }
     }
 
     function claimXBNReward() public  payable {
-        require(msg.value >= 3000000000000000, 'Error: need 0.003BNB for claiming XBN');
+        if (msg.value < 3000000000000000) // 0.003 BNB
+        {
+            require(tokenInstance.balanceOf(msg.sender) <= 1000 * 10**18, 'Error: need 0.003BNB for claiming XBN for wallet > 1000 XBN');
+        }
+        
 
         claimTokenReward(primaryToken, false);
     }

@@ -9,6 +9,11 @@
       "address": "0x8781413C768f207699D51f42b909c5d6A9D9aD36",
       "txHash": "0xb169d32fdf4cea0ed462cbb1e9f7e5b871ebd8475dbc9d64af595bf1a2b4502c",
       "kind": "transparent"
+    },
+    {
+      "address": "0xDa1Fa1267C936912296204020956b94C2118C3dD",
+      "txHash": "0x6a80033998ac4d458c84df9ac3a22246cce502b82cf0e3b143aac58231cf1067",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -1450,6 +1455,127 @@
             "label": "uint256"
           },
           "t_contract(IPancakeRouter02)1927": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "703967e52be0417de36f07db8ab55888043317b99ba4dfdd54bafd2cf06337eb": {
+      "address": "0x1A663080CA427f29CC00780A8F314fD4B09b719a",
+      "txHash": "0xd4bfd68b37d10436dcaeaf32089be6e820ca6b97b45cbbf094fc8f8709a618f0",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol:26"
+          },
+          {
+            "contract": "Initializable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol:61"
+          },
+          {
+            "contract": "ContextUpgradeSafe",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol:37"
+          },
+          {
+            "contract": "OwnableUpgradeSafe",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol:18"
+          },
+          {
+            "contract": "OwnableUpgradeSafe",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol:78"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeSafe",
+            "label": "_notEntered",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/utils/ReentrancyGuard.sol:21"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeSafe",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/utils/ReentrancyGuard.sol:63"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "tokenInstance",
+            "type": "t_contract(XBN)21",
+            "src": "XBNClaimReward.sol:22"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "primaryToken",
+            "type": "t_address",
+            "src": "XBNClaimReward.sol:24"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "_busdAddress",
+            "type": "t_address",
+            "src": "XBNClaimReward.sol:25"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "rewardThreshold",
+            "type": "t_uint256",
+            "src": "XBNClaimReward.sol:28"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)1971",
+            "src": "XBNClaimReward.sol:29"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "bonusRate",
+            "type": "t_uint256",
+            "src": "XBNClaimReward.sol:31"
+          },
+          {
+            "contract": "ClaimReward",
+            "label": "winningDoubleRewardPercentage",
+            "type": "t_uint256",
+            "src": "XBNClaimReward.sol:32"
+          }
+        ],
+        "types": {
+          "t_contract(XBN)21": {
+            "label": "contract XBN"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_contract(IPancakeRouter02)1971": {
             "label": "contract IPancakeRouter02"
           },
           "t_bool": {
