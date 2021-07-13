@@ -13,7 +13,7 @@
     "flatten": "./scripts/flatten-contract.sh",
     "clean": "rm -rf  ./build",
     "predeploy-contract": "yarn clean",
-    "deploy-contract": "npx truffle migrate -f 2 --to 2 --network bsc_testnet",
+    "deploy": "npx truffle compile --all && npx truffle migrate -f 2 --to 2 --network bsc_testnet",
     "deploy-contract:debug": "PANCAKE_ROUTER=0x10ED43C718714eb63d5aA57B78B54704E256024E npx truffle migrate -f 2 --to 2 --network bsc_mainnet_fork --verbose-rpc --describe-json --dry-run",
     "deploy-contract:mainnet": "npx truffle migrate -f 2 --to 2 --network bsc",
     "preupgrade-contract": "yarn clean",

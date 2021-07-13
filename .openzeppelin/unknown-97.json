@@ -1,0 +1,119 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0x7cF752EBDE6F1BD220e4e8361C7A5A52aB762A3c",
+    "txHash": "0x56f1d7e706b1470c2aa2195a482c861935b681d88eb5db3d36fbda39a12d0d79"
+  },
+  "proxies": [
+    {
+      "address": "0xD7Cc8b4735fF5ecCfFc1b6a0F4F8256d88434Be1",
+      "txHash": "0x1392132c98c2c38d6715e02dc4e63de7199be6a901ea619862c969b8104c485e",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "7a12854ed27c4e1d0977d11759cfa7accd67bc0a9e9d1def847e7d4478741d4c": {
+      "address": "0x0F692843522035C0C02b3F538F38CB72Cc77d90d",
+      "txHash": "0x3da2a3a75b99f34599ddbe6daa93641aee0d8b4fdf754936c0ccff7de3d03739",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol:26"
+          },
+          {
+            "contract": "Initializable",
+            "label": "______gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/Initializable.sol:61"
+          },
+          {
+            "contract": "ContextUpgradeSafe",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/GSN/Context.sol:37"
+          },
+          {
+            "contract": "OwnableUpgradeSafe",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol:18"
+          },
+          {
+            "contract": "OwnableUpgradeSafe",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol:78"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeSafe",
+            "label": "_notEntered",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/utils/ReentrancyGuard.sol:21"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeSafe",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-ethereum-package/contracts/utils/ReentrancyGuard.sol:63"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "tokenInstance",
+            "type": "t_contract(XBN)9",
+            "src": "AIStaking.sol:22"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "primaryToken",
+            "type": "t_address",
+            "src": "AIStaking.sol:24"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_busdAddress",
+            "type": "t_address",
+            "src": "AIStaking.sol:25"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)1621",
+            "src": "AIStaking.sol:29"
+          }
+        ],
+        "types": {
+          "t_contract(XBN)9": {
+            "label": "contract XBN"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(IPancakeRouter02)1621": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    }
+  }
+}
