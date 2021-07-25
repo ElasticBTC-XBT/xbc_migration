@@ -33,7 +33,6 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.1.0",
     "@openzeppelin/contracts-upgradeable": "^4.2.0",
-    "@pancakeswap/pancake-swap-lib": "^0.0.4",
     "@truffle/hdwallet-provider": "^1.4.0",
     "dotenv": "^9.0.2",
     "truffle": "^5.3.13",

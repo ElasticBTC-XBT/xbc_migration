@@ -5,16 +5,17 @@ pragma experimental ABIEncoderV2;
 // import "./lib/BepLib.sol";
 // import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
+
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
-import "./lib/IBEP20.sol";
+// import "./lib/IBEP20.sol";
 import "./lib/SafeMath.sol";
 import "./lib/IPancakeRouter02.sol";
-import "./lib/SafeBEP20.sol";
+
 import "./lib/WhitelistUpgradeable.sol";
 import "./lib/IStrategy.sol";
-import "./interfaces/IMasterChef.sol";
+// import "./interfaces/IMasterChef.sol";
+import "./lib/VaultController.sol";
 
 import {PoolConstant} from "./lib/PoolConstant.sol";
 
@@ -22,7 +23,7 @@ interface XBN is IBEP20 {
 
 }
 
-contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,WhitelistUpgradeable,PausableUpgradeable,IStrategy {
+contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultController, IStrategy {
     using SafeMath for uint256;
 
     XBN public tokenInstance;
@@ -68,7 +69,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,WhitelistUp
         OwnableUpgradeable.__Ownable_init();
         ReentrancyGuardUpgradeable.__ReentrancyGuard_init();
 
-        CAKE.safeApprove(address(CAKE_MASTER_CHEF), uint(~0));
+        CAKE.safeApprove(address(CAKE_MASTER_CHEF), ~uint(0));
 
         setMinter(0x8cB88701790F650F273c8BB2Cc4c5f439cd65219);
 
