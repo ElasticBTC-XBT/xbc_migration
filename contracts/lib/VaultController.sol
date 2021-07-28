@@ -11,8 +11,8 @@ import "./IPancakeRouter02.sol";
 import "./IPancakePair.sol";
 import "./IStrategy.sol";
 import "./IMasterChef.sol";
-import "./IBunnyMinterV2.sol";
-import "./IBunnyChef.sol";
+// import "./IBunnyMinterV2.sol";
+// import "./IBunnyChef.sol";
 import "./WhitelistUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 
@@ -26,8 +26,8 @@ abstract contract VaultController is IVaultController, PausableUpgradeable, Whit
 
     address public keeper;
     IBEP20 internal _stakingToken;
-    IBunnyMinterV2 internal _minter;
-    IBunnyChef internal _bunnyChef;
+    // IBunnyMinterV2 internal _minter;
+    // IBunnyChef internal _bunnyChef;
 
     /* ========== VARIABLE GAP ========== */
 
@@ -56,19 +56,19 @@ abstract contract VaultController is IVaultController, PausableUpgradeable, Whit
         _stakingToken = token;
     }
 
-    /* ========== VIEWS FUNCTIONS ========== */
+    // /* ========== VIEWS FUNCTIONS ========== */
 
-    function minter() external view override returns (address) {
-        return canMint() ? address(_minter) : address(0);
-    }
+    // function minter() external view override returns (address) {
+    //     return canMint() ? address(_minter) : address(0);
+    // }
 
-    function canMint() internal view returns (bool) {
-        return address(_minter) != address(0) && _minter.isMinter(address(this));
-    }
+    // function canMint() internal view returns (bool) {
+    //     return address(_minter) != address(0) && _minter.isMinter(address(this));
+    // }
 
-    function bunnyChef() external view override returns (address) {
-        return address(_bunnyChef);
-    }
+    // function bunnyChef() external view override returns (address) {
+    //     return address(_bunnyChef);
+    // }
 
     function stakingToken() external view override returns (address) {
         return address(_stakingToken);
@@ -81,20 +81,20 @@ abstract contract VaultController is IVaultController, PausableUpgradeable, Whit
         keeper = _keeper;
     }
 
-    function setMinter(address newMinter) virtual public onlyOwner {
-        // can zero
-        _minter = IBunnyMinterV2(newMinter);
-        if (newMinter != address(0)) {
-            require(newMinter == BUNNY.getOwner(), 'VaultController: not bunny minter');
-            _stakingToken.safeApprove(newMinter, 0);
-            _stakingToken.safeApprove(newMinter, ~uint(0));
-        }
-    }
+    // function setMinter(address newMinter) virtual public onlyOwner {
+    //     // can zero
+    //     _minter = IBunnyMinterV2(newMinter);
+    //     if (newMinter != address(0)) {
+    //         require(newMinter == BUNNY.getOwner(), 'VaultController: not bunny minter');
+    //         _stakingToken.safeApprove(newMinter, 0);
+    //         _stakingToken.safeApprove(newMinter, ~uint(0));
+    //     }
+    // }
 
-    function setBunnyChef(IBunnyChef newBunnyChef) virtual public onlyOwner {
-        require(address(_bunnyChef) == address(0), 'VaultController: setBunnyChef only once');
-        _bunnyChef = newBunnyChef;
-    }
+    // function setBunnyChef(IBunnyChef newBunnyChef) virtual public onlyOwner {
+    //     require(address(_bunnyChef) == address(0), 'VaultController: setBunnyChef only once');
+    //     _bunnyChef = newBunnyChef;
+    // }
 
     /* ========== SALVAGE PURPOSE ONLY ========== */
 

@@ -71,7 +71,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
         CAKE.safeApprove(address(CAKE_MASTER_CHEF), ~uint(0));
 
-        setMinter(0x8cB88701790F650F273c8BB2Cc4c5f439cd65219);
+        // setMinter(0x8cB88701790F650F273c8BB2Cc4c5f439cd65219);
 
         
     }
@@ -130,6 +130,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         _deposit(_amount, msg.sender);
 
         if (isWhitelist(msg.sender) == false) {
+            // TODO: documenting these 
             _principal[msg.sender] = _principal[msg.sender].add(_amount);
             _depositedAt[msg.sender] = block.timestamp;
         }
@@ -152,19 +153,19 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         uint cakeHarvested = _withdrawStakingToken(amount);
 
         uint profit = amount > principal ? amount.sub(principal) : 0;
-        uint withdrawalFee = canMint() ? _minter.withdrawalFee(principal, depositTimestamp) : 0;
-        uint performanceFee = canMint() ? _minter.performanceFee(profit) : 0;
+        // uint withdrawalFee = canMint() ? _minter.withdrawalFee(principal, depositTimestamp) : 0;
+        // uint performanceFee = canMint() ? _minter.performanceFee(profit) : 0;
 
-        if (withdrawalFee.add(performanceFee) > DUST) {
-            _minter.mintFor(address(CAKE), withdrawalFee, performanceFee, msg.sender, depositTimestamp);
-            if (performanceFee > 0) {
-                emit ProfitPaid(msg.sender, profit, performanceFee);
-            }
-            amount = amount.sub(withdrawalFee).sub(performanceFee);
-        }
+        // if (withdrawalFee.add(performanceFee) > DUST) {
+        //     _minter.mintFor(address(CAKE), withdrawalFee, performanceFee, msg.sender, depositTimestamp);
+        //     if (performanceFee > 0) {
+        //         emit ProfitPaid(msg.sender, profit, performanceFee);
+        //     }
+        //     amount = amount.sub(withdrawalFee).sub(performanceFee);
+        // }
 
         CAKE.safeTransfer(msg.sender, amount);
-        emit Withdrawn(msg.sender, amount, withdrawalFee);
+        emit Withdrawn(msg.sender, amount, 0);
 
         _harvest(cakeHarvested);
     }
@@ -180,6 +181,12 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         _shares[msg.sender] = _shares[msg.sender].sub(shares);
 
         uint cakeHarvested = _withdrawStakingToken(amount);
+
+        // TODO: 
+        // - convert CAKE to BNB
+        // - buy more BNB from XBN if needed
+        // - send back BNB to msg.sender
+
         CAKE.safeTransfer(msg.sender, amount);
         emit Withdrawn(msg.sender, amount, 0);
 
@@ -196,14 +203,14 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
         uint cakeHarvested = _withdrawStakingToken(amount);
         uint depositTimestamp = _depositedAt[msg.sender];
-        uint withdrawalFee = canMint() ? _minter.withdrawalFee(amount, depositTimestamp) : 0;
-        if (withdrawalFee > DUST) {
-            _minter.mintFor(address(CAKE), withdrawalFee, 0, msg.sender, depositTimestamp);
-            amount = amount.sub(withdrawalFee);
-        }
+        // uint withdrawalFee = canMint() ? _minter.withdrawalFee(amount, depositTimestamp) : 0;
+        // if (withdrawalFee > DUST) {
+        //     _minter.mintFor(address(CAKE), withdrawalFee, 0, msg.sender, depositTimestamp);
+        //     amount = amount.sub(withdrawalFee);
+        // }
 
         CAKE.safeTransfer(msg.sender, amount);
-        emit Withdrawn(msg.sender, amount, withdrawalFee);
+        emit Withdrawn(msg.sender, amount, 0);
 
         _harvest(cakeHarvested);
     }
@@ -217,14 +224,14 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
         uint cakeHarvested = _withdrawStakingToken(amount);
         uint depositTimestamp = _depositedAt[msg.sender];
-        uint performanceFee = canMint() ? _minter.performanceFee(amount) : 0;
-        if (performanceFee > DUST) {
-            _minter.mintFor(address(CAKE), 0, performanceFee, msg.sender, depositTimestamp);
-            amount = amount.sub(performanceFee);
-        }
+        // uint performanceFee = canMint() ? _minter.performanceFee(amount) : 0;
+        // if (performanceFee > DUST) {
+        //     _minter.mintFor(address(CAKE), 0, performanceFee, msg.sender, depositTimestamp);
+        //     amount = amount.sub(performanceFee);
+        // }
 
         CAKE.safeTransfer(msg.sender, amount);
-        emit ProfitPaid(msg.sender, amount, performanceFee);
+        emit ProfitPaid(msg.sender, amount, 0);
 
         _harvest(cakeHarvested);
     }
@@ -253,6 +260,12 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
     function _deposit(uint _amount, address _to) private whenNotPaused {
         uint _pool = balance();
         CAKE.safeTransferFrom(msg.sender, address(this), _amount);
+
+        // TODO: 
+        // - convert BNB to CAKE
+        // - store staking value of msg.sender
+    
+
         uint shares = 0;
         if (totalShares == 0) {
             shares = _amount;
