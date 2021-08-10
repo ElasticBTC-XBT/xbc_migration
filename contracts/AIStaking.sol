@@ -19,35 +19,25 @@ import "./lib/VaultController.sol";
 
 import {PoolConstant} from "./lib/PoolConstant.sol";
 
-interface XBN is IBEP20 {
-
-}
-
 contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultController, IStrategy {
     using SafeMath for uint256;
 
-    XBN public tokenInstance;
+    // address public primaryToken;
+    // address public _busdAddress;
+    address public BURN_ADDRESS; // = 0x000000000000000000000000000000000000dEaD;
 
-    address public primaryToken;
-    address public _busdAddress;
-    address constant DEAD_ADDRESS = 0x000000000000000000000000000000000000dEaD;
-
-    // uint256 public rewardThreshold;
+    
     IPancakeRouter02 public pancakeRouter;
 
-    // uint256 public bonusRate;
-    // uint256 public winningDoubleRewardPercentage;
-
-    // event ClaimBNBSuccessfully(address, uint256, uint256);
-    event UpdateBUSDAddress(address);
 
     using SafeBEP20 for IBEP20;
     using SafeMath for uint;
 
     /* ========== CONSTANTS ============= */
 
-    IBEP20 private constant CAKE = IBEP20(0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82);
-    IMasterChef private constant CAKE_MASTER_CHEF = IMasterChef(0x73feaa1eE314F8c655E354234017bE2193C9E24E);
+    IBEP20 private CAKE ;//= IBEP20(0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82);
+    IBEP20 private XBN;// = IBEP20(0x547CBE0f0c25085e7015Aa6939b28402EB0CcDAC);
+    IMasterChef private CAKE_MASTER_CHEF;// = IMasterChef(0x73feaa1eE314F8c655E354234017bE2193C9E24E);
 
     uint public constant override pid = 0;
     PoolConstant.PoolTypes public constant override poolType = PoolConstant.PoolTypes.CakeStake;
@@ -63,16 +53,22 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     /* ========== INITIALIZER ========== */
 
-    function initialize() external initializer {
+    function initialize(address routerAddress) external initializer {
         __VaultController_init(CAKE);
 
         OwnableUpgradeable.__Ownable_init();
         ReentrancyGuardUpgradeable.__ReentrancyGuard_init();
 
-        CAKE.safeApprove(address(CAKE_MASTER_CHEF), ~uint(0));
+        pancakeRouter = IPancakeRouter02(routerAddress);
+        CAKE = IBEP20(0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82);
+        XBN = IBEP20(0x547CBE0f0c25085e7015Aa6939b28402EB0CcDAC);
+        CAKE_MASTER_CHEF = IMasterChef(0x73feaa1eE314F8c655E354234017bE2193C9E24E);
 
-        // setMinter(0x8cB88701790F650F273c8BB2Cc4c5f439cd65219);
+        CAKE.approve(address(CAKE_MASTER_CHEF), 2**256 - 1);
+        CAKE.approve(address(pancakeRouter), ~uint(0));
+        // XBN.approve(address(pancakeRouter), ~uint(0));
 
+        setBurnAddress(0x000000000000000000000000000000000000dEaD);
         
     }
 
@@ -126,10 +122,28 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     /* ========== MUTATIVE FUNCTIONS ========== */
 
+    function swapCakeForXBN(uint amount,address to) public {
+        
+        address[] memory path = new address[](2);
+        path[0] = address(CAKE);
+        path[1] = address(XBN);
+
+        // make the swap
+
+        pancakeRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+            amount,
+            0, // accept any amount of XBN
+            path,
+            to,
+            block.timestamp + 360
+        );
+    }
+
     function deposit(uint _amount) public override {
         _deposit(_amount, msg.sender);
 
-        if (isWhitelist(msg.sender) == false) {
+        // if (isWhitelist(msg.sender) == false) 
+        {
             // TODO: documenting these 
             _principal[msg.sender] = _principal[msg.sender].add(_amount);
             _depositedAt[msg.sender] = block.timestamp;
@@ -142,8 +156,8 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     function withdrawAll() external override {
         uint amount = balanceOf(msg.sender);
-        uint principal = principalOf(msg.sender);
-        uint depositTimestamp = _depositedAt[msg.sender];
+        // uint principal = principalOf(msg.sender);
+        // uint depositTimestamp = _depositedAt[msg.sender];
 
         totalShares = totalShares.sub(_shares[msg.sender]);
         delete _shares[msg.sender];
@@ -152,7 +166,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
         uint cakeHarvested = _withdrawStakingToken(amount);
 
-        uint profit = amount > principal ? amount.sub(principal) : 0;
+        // uint profit = amount > principal ? amount.sub(principal) : 0;
         // uint withdrawalFee = canMint() ? _minter.withdrawalFee(principal, depositTimestamp) : 0;
         // uint performanceFee = canMint() ? _minter.performanceFee(profit) : 0;
 
@@ -182,7 +196,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
         uint cakeHarvested = _withdrawStakingToken(amount);
 
-        // TODO: 
+        // TODO for BNB Version
         // - convert CAKE to BNB
         // - buy more BNB from XBN if needed
         // - send back BNB to msg.sender
@@ -202,7 +216,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         _principal[msg.sender] = _principal[msg.sender].sub(amount);
 
         uint cakeHarvested = _withdrawStakingToken(amount);
-        uint depositTimestamp = _depositedAt[msg.sender];
+        // uint depositTimestamp = _depositedAt[msg.sender];
         // uint withdrawalFee = canMint() ? _minter.withdrawalFee(amount, depositTimestamp) : 0;
         // if (withdrawalFee > DUST) {
         //     _minter.mintFor(address(CAKE), withdrawalFee, 0, msg.sender, depositTimestamp);
@@ -223,14 +237,16 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         _cleanupIfDustShares();
 
         uint cakeHarvested = _withdrawStakingToken(amount);
-        uint depositTimestamp = _depositedAt[msg.sender];
+        // uint depositTimestamp = _depositedAt[msg.sender];
         // uint performanceFee = canMint() ? _minter.performanceFee(amount) : 0;
         // if (performanceFee > DUST) {
         //     _minter.mintFor(address(CAKE), 0, performanceFee, msg.sender, depositTimestamp);
         //     amount = amount.sub(performanceFee);
         // }
+        
+        // CAKE.safeTransfer(msg.sender, amount);
+        swapCakeForXBN(amount, msg.sender);
 
-        CAKE.safeTransfer(msg.sender, amount);
         emit ProfitPaid(msg.sender, amount, 0);
 
         _harvest(cakeHarvested);
@@ -252,6 +268,14 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     function _harvest(uint cakeAmount) private {
         if (cakeAmount > 0) {
+
+            // TODO: burn 33% into XBN on harvest if > 0.5 cake
+            if (cakeAmount > 5* 10 ** 17) { // 0.5 cake
+                uint burnAmount = cakeAmount.div(3);
+                cakeAmount = cakeAmount.sub(burnAmount);
+                swapCakeForXBN(burnAmount, BURN_ADDRESS);
+            }
+
             emit Harvested(cakeAmount);
             CAKE_MASTER_CHEF.enterStaking(cakeAmount);
         }
@@ -259,12 +283,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     function _deposit(uint _amount, address _to) private whenNotPaused {
         uint _pool = balance();
-        CAKE.safeTransferFrom(msg.sender, address(this), _amount);
-
-        // TODO: 
-        // - convert BNB to CAKE
-        // - store staking value of msg.sender
-    
+        CAKE.safeTransferFrom(msg.sender, address(this), _amount);    
 
         uint shares = 0;
         if (totalShares == 0) {
@@ -300,20 +319,13 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
     }
 
 
-    function setPrimaryToken(address tokenAddress) public onlyOwner {
-        // Set distribution token address
-        require(
-            tokenAddress != address(0),
-            "Error: cannot add token at NoWhere :)"
-        );
-        tokenInstance = XBN(tokenAddress);
-        primaryToken = tokenAddress;
-    }
-
-  
-
     function setRouter(address payable routerAddress) public onlyOwner {
         pancakeRouter = IPancakeRouter02(routerAddress);
+    }
+  
+
+    function setBurnAddress(address _burnAddress) public onlyOwner {
+        BURN_ADDRESS = _burnAddress;
     }
 
 }

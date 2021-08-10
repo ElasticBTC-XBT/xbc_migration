@@ -19,11 +19,11 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           privateKeys,
-          "https://data-seed-prebsc-1-s2.binance.org:8545"
+          "https://data-seed-prebsc-1-s1.binance.org:8545"
         ),
       network_id: 97,
       confirmations: 3,
-      timeoutBlocks: 200,
+      timeoutBlocks: 1000,
       // gas: 5000000,
       gasPrice: 10e9,
       skipDryRun: true,
@@ -37,7 +37,7 @@ module.exports = {
         new HDWalletProvider(privateKeys, "https://bsc-dataseed1.binance.org"),
       network_id: 56,
       confirmations: 3,
-      timeoutBlocks: 200,
+      timeoutBlocks: 1000,
       // gas: 10000000,
       gasPrice: 5000000000, //5gwei
     },
@@ -51,7 +51,7 @@ module.exports = {
         ), // privatekey for: legend used tumble chase apology drastic program fringe identify match million outer
       network_id: 56,
       confirmations: 2,
-      timeoutBlocks: 100,
+      timeoutBlocks: 1000,
       gasPrice: 20000000000, //20gwei
     },
     // Useful for testing. The `development` name is special - truffle uses it by default
