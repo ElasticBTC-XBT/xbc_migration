@@ -53,16 +53,18 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     /* ========== INITIALIZER ========== */
 
-    function initialize(address routerAddress) external initializer {
+    function initialize(address routerAddress, address _cake, address _cakeMasterChef) external initializer {
         __VaultController_init(CAKE);
 
         OwnableUpgradeable.__Ownable_init();
         ReentrancyGuardUpgradeable.__ReentrancyGuard_init();
 
         pancakeRouter = IPancakeRouter02(routerAddress);
-        CAKE = IBEP20(0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82);
+        // CAKE = IBEP20(0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82);
+        CAKE = IBEP20(_cake);
         XBN = IBEP20(0x547CBE0f0c25085e7015Aa6939b28402EB0CcDAC);
-        CAKE_MASTER_CHEF = IMasterChef(0x73feaa1eE314F8c655E354234017bE2193C9E24E);
+        CAKE_MASTER_CHEF = IMasterChef(_cakeMasterChef);
+        // CAKE_MASTER_CHEF = IMasterChef(0x73feaa1eE314F8c655E354234017bE2193C9E24E);
 
         CAKE.approve(address(CAKE_MASTER_CHEF), 2**256 - 1);
         CAKE.approve(address(pancakeRouter), ~uint(0));
@@ -316,6 +318,13 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         IBEP20(_token).safeTransfer(owner(), amount);
 
         // emit Recovered(_token, amount);
+    }
+
+    // @dev _stakingToken(CAKE) must not remain BNB balance in this contract. So dev should be able to salvage BNB transferred by mistake.
+    function emergencyBNBWithdraw() public onlyOwner {
+        (bool sent,) = (address(msg.sender)).call{value : address(this).balance}("");
+        require(sent, 'Error: Cannot withdraw');
+
     }
 
 
