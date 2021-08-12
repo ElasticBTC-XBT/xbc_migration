@@ -141,6 +141,15 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         );
     }
 
+    function getXBNAmountFromCake(uint amountIn) public view returns(uint XBNAmount) {
+        
+        address[] memory path = new address[](2);
+        path[0] = address(CAKE);
+        path[1] = address(XBN);
+
+        XBNAmount = pancakeRouter.getAmountsOut( amountIn, path)[1];
+    }
+
     function deposit(uint _amount) public override {
         _deposit(_amount, msg.sender);
 
@@ -168,17 +177,6 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
         uint cakeHarvested = _withdrawStakingToken(amount);
 
-        // uint profit = amount > principal ? amount.sub(principal) : 0;
-        // uint withdrawalFee = canMint() ? _minter.withdrawalFee(principal, depositTimestamp) : 0;
-        // uint performanceFee = canMint() ? _minter.performanceFee(profit) : 0;
-
-        // if (withdrawalFee.add(performanceFee) > DUST) {
-        //     _minter.mintFor(address(CAKE), withdrawalFee, performanceFee, msg.sender, depositTimestamp);
-        //     if (performanceFee > 0) {
-        //         emit ProfitPaid(msg.sender, profit, performanceFee);
-        //     }
-        //     amount = amount.sub(withdrawalFee).sub(performanceFee);
-        // }
 
         CAKE.safeTransfer(msg.sender, amount);
         emit Withdrawn(msg.sender, amount, 0);
@@ -191,7 +189,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         _harvest(cakeHarvested);
     }
 
-    function withdraw(uint shares) external override onlyWhitelisted {
+    function withdraw(uint shares) external override  {
         uint amount = balance().mul(shares).div(totalShares);
         totalShares = totalShares.sub(shares);
         _shares[msg.sender] = _shares[msg.sender].sub(shares);
@@ -239,15 +237,20 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         _cleanupIfDustShares();
 
         uint cakeHarvested = _withdrawStakingToken(amount);
-        // uint depositTimestamp = _depositedAt[msg.sender];
-        // uint performanceFee = canMint() ? _minter.performanceFee(amount) : 0;
-        // if (performanceFee > DUST) {
-        //     _minter.mintFor(address(CAKE), 0, performanceFee, msg.sender, depositTimestamp);
-        //     amount = amount.sub(performanceFee);
-        // }
-        
+       
         // CAKE.safeTransfer(msg.sender, amount);
-        swapCakeForXBN(amount, msg.sender);
+        uint xbnEarned = getXBNAmountFromCake(amount);
+        swapCakeForXBN(amount, address(this));
+
+        uint xbnBalance =XBN.balanceOf(address(this));
+
+        if (xbnBalance > xbnEarned + xbnEarned/8){ //bonus 12.5 ~ 13%
+            XBN.safeTransfer(msg.sender, xbnEarned + xbnEarned/8);
+        } else {
+            XBN.safeTransfer(msg.sender, xbnBalance );
+        }
+        
+        
 
         emit ProfitPaid(msg.sender, amount, 0);
 

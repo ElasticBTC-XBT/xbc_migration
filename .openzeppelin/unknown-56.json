@@ -1,0 +1,568 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0xD34fF53369b479F34Eb9f1c7760D5A67d310fE41",
+    "txHash": "0x7b196f53af26ed84c6ada2d6b257a20557bbd0a407136acd7bee61835812b6a9"
+  },
+  "proxies": [
+    {
+      "address": "0xc50323b2FB63A68cf5C039fEBAd6B8ECc6Be4328",
+      "txHash": "0xb949386a231c5228e4d977d1f9ec701edc23e241e0f7e22b3c17640b9eb32422",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "cfcc534490603919c1443759cfc97fa846e0c33278a817243a2b7e8dfa73250c": {
+      "address": "0xA56e9d0CCac4d63cD93d9406Bc90032Fd3B92934",
+      "txHash": "0x304e93428e22d6fd403feec849a78a35fcf9657782067cc888d8df922764557e",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_whitelist",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "lib/WhitelistUpgradeable.sol:8"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_disable",
+            "type": "t_bool",
+            "src": "lib/WhitelistUpgradeable.sol:9"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/WhitelistUpgradeable.sol:43"
+          },
+          {
+            "contract": "VaultController",
+            "label": "keeper",
+            "type": "t_address",
+            "src": "lib/VaultController.sol:27"
+          },
+          {
+            "contract": "VaultController",
+            "label": "_stakingToken",
+            "type": "t_contract(IBEP20)1367",
+            "src": "lib/VaultController.sol:28"
+          },
+          {
+            "contract": "VaultController",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/VaultController.sol:34"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "BURN_ADDRESS",
+            "type": "t_address",
+            "src": "AIStaking.sol:27"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)2257",
+            "src": "AIStaking.sol:30"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE",
+            "type": "t_contract(IBEP20)1367",
+            "src": "AIStaking.sol:38"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)1367",
+            "src": "AIStaking.sol:39"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE_MASTER_CHEF",
+            "type": "t_contract(IMasterChef)1619",
+            "src": "AIStaking.sol:40"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "totalShares",
+            "type": "t_uint256",
+            "src": "AIStaking.sol:49"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_shares",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:50"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_principal",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:51"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_depositedAt",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:52"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(IPancakeRouter02)2257": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_contract(IBEP20)1367": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IMasterChef)1619": {
+            "label": "contract IMasterChef"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "629c36a0a2aadd598438f9564b03a5e97f1d7fa0b433c820e1608cc54a70a7f4": {
+      "address": "0x1B8C88114e0f2B58DFdde1aA5a27AFf79e267f0c",
+      "txHash": "0xd97d2f01116f781d4133cc86edb4c711b2a8e60f2024c398f6add0406f21132e",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_whitelist",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "lib/WhitelistUpgradeable.sol:8"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_disable",
+            "type": "t_bool",
+            "src": "lib/WhitelistUpgradeable.sol:9"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/WhitelistUpgradeable.sol:43"
+          },
+          {
+            "contract": "VaultController",
+            "label": "keeper",
+            "type": "t_address",
+            "src": "lib/VaultController.sol:27"
+          },
+          {
+            "contract": "VaultController",
+            "label": "_stakingToken",
+            "type": "t_contract(IBEP20)1462",
+            "src": "lib/VaultController.sol:28"
+          },
+          {
+            "contract": "VaultController",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/VaultController.sol:34"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "BURN_ADDRESS",
+            "type": "t_address",
+            "src": "AIStaking.sol:27"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)2352",
+            "src": "AIStaking.sol:30"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE",
+            "type": "t_contract(IBEP20)1462",
+            "src": "AIStaking.sol:38"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)1462",
+            "src": "AIStaking.sol:39"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE_MASTER_CHEF",
+            "type": "t_contract(IMasterChef)1714",
+            "src": "AIStaking.sol:40"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "totalShares",
+            "type": "t_uint256",
+            "src": "AIStaking.sol:49"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_shares",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:50"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_principal",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:51"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_depositedAt",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:52"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(IPancakeRouter02)2352": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_contract(IBEP20)1462": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IMasterChef)1714": {
+            "label": "contract IMasterChef"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "c77c058bdb7f8a07b9b3235b526ba0ab7253f0b428fe608662b984f567035f51": {
+      "address": "0xbaECD87A023E03357Ce1fc4E7fd89D03d10ED483",
+      "txHash": "0xe48592c5a24a55df85c1c3b1e636bf202ba64240a2610295cb7b13895a7b5b3a",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_whitelist",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "lib/WhitelistUpgradeable.sol:8"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_disable",
+            "type": "t_bool",
+            "src": "lib/WhitelistUpgradeable.sol:9"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/WhitelistUpgradeable.sol:43"
+          },
+          {
+            "contract": "VaultController",
+            "label": "keeper",
+            "type": "t_address",
+            "src": "lib/VaultController.sol:27"
+          },
+          {
+            "contract": "VaultController",
+            "label": "_stakingToken",
+            "type": "t_contract(IBEP20)1460",
+            "src": "lib/VaultController.sol:28"
+          },
+          {
+            "contract": "VaultController",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/VaultController.sol:34"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "BURN_ADDRESS",
+            "type": "t_address",
+            "src": "AIStaking.sol:27"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)2350",
+            "src": "AIStaking.sol:30"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE",
+            "type": "t_contract(IBEP20)1460",
+            "src": "AIStaking.sol:38"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)1460",
+            "src": "AIStaking.sol:39"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE_MASTER_CHEF",
+            "type": "t_contract(IMasterChef)1712",
+            "src": "AIStaking.sol:40"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "totalShares",
+            "type": "t_uint256",
+            "src": "AIStaking.sol:49"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_shares",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:50"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_principal",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:51"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_depositedAt",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:52"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(IPancakeRouter02)2350": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_contract(IBEP20)1460": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IMasterChef)1712": {
+            "label": "contract IMasterChef"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    }
+  }
+}
