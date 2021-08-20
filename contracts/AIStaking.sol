@@ -146,9 +146,10 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         
         address[] memory path = new address[](2);
         path[0] = address(CAKE);
-        path[1] = address(XBN);
+        path[1] = address(0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56); //BUSD
+        path[2] = address(XBN);
 
-        XBNAmount = pancakeRouter.getAmountsOut( amountIn, path)[1];
+        XBNAmount = pancakeRouter.getAmountsOut( amountIn, path)[2];
     }
 
     function deposit(uint _amount) public override {

@@ -34,7 +34,7 @@ module.exports = {
     },
     bsc: {
       provider: () =>
-        new HDWalletProvider(privateKeys, "https://bsc-dataseed1.binance.org"),
+        new HDWalletProvider(privateKeys, "https://bsc-dataseed.binance.org"),
       network_id: 56,
       confirmations: 3,
       timeoutBlocks: 1000,

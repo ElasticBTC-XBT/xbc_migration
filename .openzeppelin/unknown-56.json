@@ -563,6 +563,190 @@
           }
         }
       }
+    },
+    "ef7b4fae94e19103b48255a90f5f3941b6ab2250be960db9fa850dda4a4bb5ac": {
+      "address": "0x7B49880A591355781E93646a2faF9cf72Ff785c7",
+      "txHash": "0x7b183749fd1a7eea0fdb2717ca0c2aacf508730f2758447bc7ffa360d7a51d0f",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_whitelist",
+            "type": "t_mapping(t_address,t_bool)",
+            "src": "lib/WhitelistUpgradeable.sol:8"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "_disable",
+            "type": "t_bool",
+            "src": "lib/WhitelistUpgradeable.sol:9"
+          },
+          {
+            "contract": "WhitelistUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/WhitelistUpgradeable.sol:43"
+          },
+          {
+            "contract": "VaultController",
+            "label": "keeper",
+            "type": "t_address",
+            "src": "lib/VaultController.sol:27"
+          },
+          {
+            "contract": "VaultController",
+            "label": "_stakingToken",
+            "type": "t_contract(IBEP20)1469",
+            "src": "lib/VaultController.sol:28"
+          },
+          {
+            "contract": "VaultController",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "lib/VaultController.sol:34"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "BURN_ADDRESS",
+            "type": "t_address",
+            "src": "AIStaking.sol:27"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)2359",
+            "src": "AIStaking.sol:30"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE",
+            "type": "t_contract(IBEP20)1469",
+            "src": "AIStaking.sol:38"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)1469",
+            "src": "AIStaking.sol:39"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "CAKE_MASTER_CHEF",
+            "type": "t_contract(IMasterChef)1721",
+            "src": "AIStaking.sol:40"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "totalShares",
+            "type": "t_uint256",
+            "src": "AIStaking.sol:49"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_shares",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:50"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_principal",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:51"
+          },
+          {
+            "contract": "AIStaking",
+            "label": "_depositedAt",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "AIStaking.sol:52"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_contract(IPancakeRouter02)2359": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_contract(IBEP20)1469": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IMasterChef)1721": {
+            "label": "contract IMasterChef"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
     }
   }
 }
