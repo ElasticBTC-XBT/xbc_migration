@@ -15,7 +15,7 @@
     "predeploy-contract": "yarn clean",
     "deploy": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 2 --to 2 --network bsc_testnet",
     "verify_testnet": "npx truffle run verify AIStaking@0xfDBFc1e26CBC451C833302c9125533bB76f95E9C --network bsc_testnet",
-    "verify_mainnet": "npx truffle run verify AIStaking@0xbaECD87A023E03357Ce1fc4E7fd89D03d10ED483 --network bsc",
+    "verify_mainnet": "npx truffle run verify AIStaking@0x71EBFDc433720F94429B8F28C1cae477dba05Ac2 --network bsc",
     "deploy:dry": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 2 --to 2 --network bsc_testnet --dry-run",
     "deploy-contract:debug": "PANCAKE_ROUTER=0x10ED43C718714eb63d5aA57B78B54704E256024E npx truffle migrate -f 2 --to 2 --network bsc_mainnet_fork --verbose-rpc --describe-json --dry-run",
     "deploy:mainnet": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 3 --to 3 --network bsc",

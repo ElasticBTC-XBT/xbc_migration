@@ -144,9 +144,10 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
 
     function getXBNAmountFromCake(uint amountIn) public view returns(uint XBNAmount) {
         
-        address[] memory path = new address[](2);
+        address[] memory path = new address[](3);
+        
         path[0] = address(CAKE);
-        path[1] = address(0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56); //BUSD
+        path[1] = address(0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56); //BUSD address
         path[2] = address(XBN);
 
         XBNAmount = pancakeRouter.getAmountsOut( amountIn, path)[2];
