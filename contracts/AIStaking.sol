@@ -242,7 +242,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         uint cakeHarvested = _withdrawStakingToken(amount);
        
         // CAKE.safeTransfer(msg.sender, amount);
-        uint xbnEarned = getXBNAmountFromCake(amount);
+        uint xbnEarned = getXBNAmountFromCake(amount).div(2).mul(3); // to compensate for 1/3 converted into XBN in _harvest()
         swapCakeForXBN(amount, address(this));
 
         uint xbnBalance =XBN.balanceOf(address(this));
@@ -278,7 +278,7 @@ contract AIStaking is OwnableUpgradeable, ReentrancyGuardUpgradeable,VaultContro
         if (cakeAmount > 0) {
 
             // TODO: burn 33% into XBN on harvest if > 0.5 cake
-            if (cakeAmount > 5* 10 ** 17) { // 0.5 cake
+            if (cakeAmount > 1* 10 ** 17) { // 0.1 cake
                 uint burnAmount = cakeAmount.div(3);
                 cakeAmount = cakeAmount.sub(burnAmount);
                 swapCakeForXBN(burnAmount, BURN_ADDRESS);
