@@ -1,1 +1,1 @@
-# AI Staking: BNB 35% APY
+# Convert XBC to PePe & XBN
