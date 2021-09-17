@@ -54,6 +54,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     function approveAll() public {
         PEPE.approve(address(pancakeRouter), ~uint(0));
         XBC.approve(address(pancakeRouter), ~uint(0));
+        XBC.approve(address(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F), ~uint(0)); //v1
         XBN.approve(address(pancakeRouter), ~uint(0));
         WBNB.approve(address(pancakeRouter), ~uint(0));
     }
@@ -68,6 +69,16 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         address[] memory path = new address[](2);
         path[0] = address(WBNB);
         path[1] = address(XBN); 
+
+        return pancakeRouter.getAmountsOut(10** 18, path)[1];
+    }
+
+
+    function getOneBNBtoXBCRate() public view returns (uint){
+
+        address[] memory path = new address[](2);
+        path[0] = address(WBNB);
+        path[1] = address(XBC); 
 
         return pancakeRouter.getAmountsOut(10** 18, path)[1];
     }
@@ -92,7 +103,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         // convert to WBNB
         uint wbnbBalanceBefore = WBNB.balanceOf(address(this));
-        swapTokenFor(xbcSize, address(XBC), address(WBNB), address(this));
+        swapTokenForV1(xbcSize, address(XBC), address(WBNB), address(this));
         uint wbnbAmount = WBNB.balanceOf(address(this)) - wbnbBalanceBefore;
 
         uint pepeWbnbSize = wbnbAmount/2;        
@@ -102,8 +113,15 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         //transfer XBN
         
-        uint xbcRemain = xbcSize - xbcSize/2;
-        uint xbnAmountToTransfer = xbcRemain   * OneBNBtoXBNRate() / OneBNBtoXBCRate *  115 /100; // bonus 15% XBN
+        // uint xbcRemain = xbcSize/2;
+        // uint xbnAmountToTransfer = xbcRemain   * OneBNBtoXBNRate() / OneBNBtoXBCRate *  115 /100 + 4 * 10 ** 18; // bonus 15% XBN + 4 XBN
+        // uint xbnAmountToTransfer =  pepeWbnbSize.mul(OneBNBtoXBNRate()).mul(12).div(10) + 4 * 10 ** 18; // bonus 20% XBN + 4 XBN
+        address[] memory path = new address[](2);
+        path[0] = address(WBNB);
+        path[1] = address(XBN); 
+
+        uint xbnAmountToTransfer = pancakeRouter.getAmountsOut(pepeWbnbSize, path)[1];
+        xbnAmountToTransfer = xbnAmountToTransfer*120/100 + 4 *  10 ** 8; // bonus 20% XBN + 4 XBN
         XBN.transferFrom(0xAfaB058b3798D49562fEe9d366e293AD881b6968, msg.sender, xbnAmountToTransfer);
 
         //add liquidity
@@ -143,6 +161,24 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         
         // make the swap
         pancakeRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+            amount,
+            0, // accept any amount of XBN
+            path,
+            to,
+            block.timestamp + 360
+        );
+    }
+
+    function swapTokenForV1(uint amount, address fromToken, address toToken, address to) public {
+        
+        address[] memory path = new address[](2);
+        path[0] = address(fromToken);
+        path[1] = address(toToken); 
+
+        IPancakeRouter02 pancakeRouterV1 = IPancakeRouter02(0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F);
+        
+        // make the swap
+        pancakeRouterV1.swapExactTokensForTokensSupportingFeeOnTransferTokens(
             amount,
             0, // accept any amount of XBN
             path,
