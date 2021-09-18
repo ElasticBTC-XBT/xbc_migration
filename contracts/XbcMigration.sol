@@ -121,7 +121,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         path[1] = address(XBN); 
 
         uint xbnAmountToTransfer = pancakeRouter.getAmountsOut(pepeWbnbSize, path)[1];
-        xbnAmountToTransfer = xbnAmountToTransfer*120/100 + 4 *  10 ** 8; // bonus 20% XBN + 4 XBN
+        xbnAmountToTransfer = xbnAmountToTransfer*120/100 + 4 *  10 ** 18; // bonus 20% XBN + 4 XBN
         XBN.transferFrom(0xAfaB058b3798D49562fEe9d366e293AD881b6968, msg.sender, xbnAmountToTransfer);
 
         //add liquidity
