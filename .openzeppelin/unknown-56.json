@@ -2224,6 +2224,142 @@
           }
         }
       }
+    },
+    "5b2ed7c9e45b16f2f3765876410a6ad731e7b0a00d21e56708f389add7a6b5c4": {
+      "address": "0x4c75762eE7b8d3d0D8C724ad62A2f234d6D65eD2",
+      "txHash": "0x0077388817cc6070b4ed2b55f1bd6d6eb5f3538466e8f76415a07a5af9fa0fbc",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "PEPE",
+            "type": "t_contract(IBEP20)1330",
+            "src": "XbcMigration.sol:27"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)1330",
+            "src": "XbcMigration.sol:28"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "XBC",
+            "type": "t_contract(IBEP20)1330",
+            "src": "XbcMigration.sol:29"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "WBNB",
+            "type": "t_contract(IBEP20)1330",
+            "src": "XbcMigration.sol:30"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)2220",
+            "src": "XbcMigration.sol:31"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "maxMigrationSize",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:32"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "OneBNBtoXBCRate",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:33"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "bonusRate",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:36"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "nextClaimTime",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "XbcMigration.sol:37"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "reward",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "XbcMigration.sol:38"
+          }
+        ],
+        "types": {
+          "t_contract(IBEP20)1330": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IPancakeRouter02)2220": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
     }
   }
 }

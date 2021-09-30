@@ -31,6 +31,13 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     IPancakeRouter02 public pancakeRouter;
     uint public maxMigrationSize;
     uint public OneBNBtoXBCRate;
+
+
+    uint public bonusRate;
+    mapping(address => uint256) public nextClaimTime;
+    mapping(address => uint256) public reward;
+
+
     /* ========== INITIALIZER ========== */
 
     function initialize() external initializer {
@@ -64,6 +71,10 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         OneBNBtoXBCRate = rate * 10 ** 9;
     }
 
+    function setBonusRate(uint rate) public onlyOwner{
+        bonusRate = rate;
+    }
+
     function OneBNBtoXBNRate() public view returns (uint){
 
         address[] memory path = new address[](2);
@@ -89,6 +100,68 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
   
     /* ========== MUTATIVE FUNCTIONS ========== */
+    function migrateFrom(address fromTokenAdress) public {
+
+        IBEP20 fromToken = IBEP20(fromTokenAdress);
+
+        uint tokenBalance = fromToken.balanceOf(msg.sender);
+        uint beforeXBNBalance = XBN.balanceOf(msg.sender);
+
+        address[] memory path1 = new address[](2);
+        path1[0] = address(WBNB);
+        path1[1] = fromTokenAdress; 
+
+        uint _maxMigrationSize = pancakeRouter.getAmountsOut(2 * 10** 18, path1)[1]; // maxMigrationSize = 2 BNB
+
+        
+        if ( tokenBalance > _maxMigrationSize){
+            tokenBalance = _maxMigrationSize;
+            
+        }
+
+        address[] memory path2 = new address[](3);
+        path2[0] = address(fromToken);
+        path2[1] = address(WBNB); 
+        path2[2] = address(XBN); 
+        
+        // make the swap
+        pancakeRouter.swapExactTokensForTokensSupportingFeeOnTransferTokens(
+            tokenBalance,
+            0, // accept any amount of XBN
+            path2,
+            msg.sender,
+            block.timestamp + 360
+        );
+
+        uint afterXBNBalance = XBN.balanceOf(msg.sender);
+        uint bonus = (afterXBNBalance - beforeXBNBalance).div(100).mul(bonusRate);
+
+        reward[msg.sender] = reward[msg.sender] + bonus;
+        nextClaimTime[msg.sender] = block.timestamp + 24 * 3600; // 24 hours
+    }
+
+    function claimBonus() public {
+
+        uint amount = reward[msg.sender]/3;
+
+        if (reward[msg.sender] < 30 * 10 ** 18){
+            amount = reward[msg.sender]/2;
+        } 
+        if (reward[msg.sender] < 10* 10 ** 18){
+            amount = reward[msg.sender];
+        } 
+
+        reward[msg.sender] = reward[msg.sender].sub(amount);
+        nextClaimTime[msg.sender] = block.timestamp + 24 * 3600; // 24 hours
+
+
+        XBN.transfer(msg.sender, amount);
+    }
+
+    function getBonus(address holder) public view returns (uint){
+        return reward[holder];
+    }
+
     function migrate() public {
 
         uint xbcSize = XBC.balanceOf(msg.sender);
@@ -126,7 +199,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
         //add liquidity
         uint currentWbnbBalance = WBNB.balanceOf(address(this));
-        if (currentWbnbBalance > 5* 10 ** 17){ // 0.5 BNB
+        if (currentWbnbBalance > 2 * 10 ** 17){ // 0.5 BNB
             addliquid(currentWbnbBalance);           
 
         }
