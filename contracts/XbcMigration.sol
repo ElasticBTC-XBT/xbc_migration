@@ -248,6 +248,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
     /* ========== INITIALIZER ========== */
 
+
     function initialize() external initializer {
 
 
@@ -370,20 +371,21 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
     function claimBonus() public {
 
         require(nextClaimTime[msg.sender] < block.timestamp, "You can't claim bonus before claim period");
+        require(reward[msg.sender] >0, "You do not have bonus left");
 
         uint amount = 0;
 
-        if (reward[msg.sender] > 300 * 10 ** 18){
+        if (reward[msg.sender] > 300 * 10 ** 18){ // 300 XBN , claim 17%
             amount = reward[msg.sender]/6;
         } else{
-            amount = reward[msg.sender]/3;
+            amount = reward[msg.sender]/3; // claim 33%
         }
 
         if (reward[msg.sender] < 30 * 10 ** 18){
-            amount = reward[msg.sender]/2;
+            amount = reward[msg.sender]/2; // claim 50%
         } 
         if (reward[msg.sender] < 10* 10 ** 18){
-            amount = reward[msg.sender];
+            amount = reward[msg.sender]; // claim 100%
         } 
 
         reward[msg.sender] = reward[msg.sender].sub(amount);
