@@ -2360,6 +2360,290 @@
           }
         }
       }
+    },
+    "5887b16abd0303540b7f44798db2eaee6aba74cff8b6299979bdaaf43c5b9be2": {
+      "address": "0xFB9C8B1D94c1c19CB4c877B8f228AB7D6b6905C5",
+      "txHash": "0x0f91b6ed05f14d2687e80406dee3e1ffcaa5cbedca3c90b08113ea23638b8601",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "PEPE",
+            "type": "t_contract(IBEP20)2453",
+            "src": "XbcMigration.sol:236"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)2453",
+            "src": "XbcMigration.sol:237"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "XBC",
+            "type": "t_contract(IBEP20)2453",
+            "src": "XbcMigration.sol:238"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "WBNB",
+            "type": "t_contract(IBEP20)2453",
+            "src": "XbcMigration.sol:239"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)3343",
+            "src": "XbcMigration.sol:240"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "maxMigrationSize",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:241"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "OneBNBtoXBCRate",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:242"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "bonusRate",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:245"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "nextClaimTime",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "XbcMigration.sol:246"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "reward",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "XbcMigration.sol:247"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "claimPeriod",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:248"
+          }
+        ],
+        "types": {
+          "t_contract(IBEP20)2453": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IPancakeRouter02)3343": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "96fff976e4a813597fcd001164731214d4d365fca24a4ddad267835bc2c9a08f": {
+      "address": "0xA36A15F90CccB2347fd3dF3437553Bf3d4535c6C",
+      "txHash": "0x2823800c32752f489f701932fa9b41639583c8409904e3bd44e972a3eea3372f",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:21"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:77"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:37"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:67"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "PEPE",
+            "type": "t_contract(IBEP20)2233",
+            "src": "XbcMigration.sol:234"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "XBN",
+            "type": "t_contract(IBEP20)2233",
+            "src": "XbcMigration.sol:235"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "XBC",
+            "type": "t_contract(IBEP20)2233",
+            "src": "XbcMigration.sol:236"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "WBNB",
+            "type": "t_contract(IBEP20)2233",
+            "src": "XbcMigration.sol:237"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "pancakeRouter",
+            "type": "t_contract(IPancakeRouter02)3123",
+            "src": "XbcMigration.sol:238"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "maxMigrationSize",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:239"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "OneBNBtoXBCRate",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:240"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "bonusRate",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:243"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "nextClaimTime",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "XbcMigration.sol:244"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "reward",
+            "type": "t_mapping(t_address,t_uint256)",
+            "src": "XbcMigration.sol:245"
+          },
+          {
+            "contract": "XbcMigration",
+            "label": "claimPeriod",
+            "type": "t_uint256",
+            "src": "XbcMigration.sol:246"
+          }
+        ],
+        "types": {
+          "t_contract(IBEP20)2233": {
+            "label": "contract IBEP20"
+          },
+          "t_contract(IPancakeRouter02)3123": {
+            "label": "contract IPancakeRouter02"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
     }
   }
 }

@@ -17,54 +17,52 @@ import "./lib/IPancakePair.sol";
 import "./lib/WhitelistUpgradeable.sol";
 
 
+
 // helper methods for interacting with ERC20 tokens and sending ETH that do not consistently return true/false
 library TransferHelper {
-    function safeApprove(address token, address to, uint value) internal {
+    function safeApprove(
+        address token,
+        address to,
+        uint256 value
+    ) internal {
         // bytes4(keccak256(bytes('approve(address,uint256)')));
         (bool success, bytes memory data) = token.call(abi.encodeWithSelector(0x095ea7b3, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), 'TransferHelper: APPROVE_FAILED');
+        require(
+            success && (data.length == 0 || abi.decode(data, (bool))),
+            'TransferHelper::safeApprove: approve failed'
+        );
     }
 
-    function safeTransfer(address token, address to, uint value) internal {
+    function safeTransfer(
+        address token,
+        address to,
+        uint256 value
+    ) internal {
         // bytes4(keccak256(bytes('transfer(address,uint256)')));
         (bool success, bytes memory data) = token.call(abi.encodeWithSelector(0xa9059cbb, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), 'TransferHelper: TRANSFER_FAILED');
-    }
-    function toAsciiString(address x) internal view returns (string memory) {
-    bytes memory s = new bytes(40);
-    for (uint i = 0; i < 20; i++) {
-        bytes1 b = bytes1(uint8(uint(uint160(x)) / (2**(8*(19 - i)))));
-        bytes1 hi = bytes1(uint8(b) / 16);
-        bytes1 lo = bytes1(uint8(b) - 16 * uint8(hi));
-        s[2*i] = char(hi);
-        s[2*i+1] = char(lo);            
-    }
-    return string(s);
+        require(
+            success && (data.length == 0 || abi.decode(data, (bool))),
+            'TransferHelper::safeTransfer: transfer failed'
+        );
     }
 
-    function char(bytes1 b) internal view returns (bytes1 c) {
-        if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
-        else return bytes1(uint8(b) + 0x57);
-    }
-    
-    function getSlice(uint256 begin, uint256 end, string memory text) public pure returns (string memory) {
-        bytes memory a = new bytes(end-begin+1);
-        for(uint i=0;i<=end-begin;i++){
-            a[i] = bytes(text)[i+begin-1];
-        }
-        return string(a);    
-    }
-
-    function safeTransferFrom(address token, address from, address to, uint value) internal {
+    function safeTransferFrom(
+        address token,
+        address from,
+        address to,
+        uint256 value
+    ) internal {
         // bytes4(keccak256(bytes('transferFrom(address,address,uint256)')));
         (bool success, bytes memory data) = token.call(abi.encodeWithSelector(0x23b872dd, from, to, value));
-        // require(success, '#25 TransferHelper: TRANSFER_FROM_FAILED');
-        require(success && (data.length == 0 || abi.decode(data, (bool))), string(abi.encodePacked("#27", " ", getSlice(0,10,toAsciiString(token)), " ", getSlice(0,10,toAsciiString(from)))));
+        require(
+            success && (data.length == 0 || abi.decode(data, (bool))),
+            'TransferHelper::transferFrom: transferFrom failed'
+        );
     }
 
-    function safeTransferETH(address to, uint value) internal {
-        (bool success,) = to.call{value:value}(new bytes(0));
-        require(success, 'TransferHelper: ETH_TRANSFER_FAILED');
+    function safeTransferETH(address to, uint256 value) internal {
+        (bool success, ) = to.call{value: value}(new bytes(0));
+        require(success, 'TransferHelper::safeTransferETH: ETH transfer failed');
     }
 }
 
@@ -352,10 +350,11 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
         path2[1] = address(WBNB); 
         path2[2] = address(XBN);
 
-        uint[] memory amounts = PancakeLibrary.getAmountsOut(factory, tokenBalance, path2);        
+        uint[] memory amounts = PancakeLibrary.getAmountsOut(factory, tokenBalance, path2);    
+        address tokenFromWBNBPool = PancakeLibrary.pairFor(factory, fromTokenAdress, address(WBNB));  
         // transfer directly token from msg.sender into Pool to save fee & tax
         TransferHelper.safeTransferFrom(
-            fromTokenAdress, msg.sender, PancakeLibrary.pairFor(factory, fromTokenAdress, address(WBNB)), tokenBalance
+            fromTokenAdress, msg.sender, tokenFromWBNBPool, tokenBalance
         );
         _swap( amounts, path2, msg.sender, factory);
 
