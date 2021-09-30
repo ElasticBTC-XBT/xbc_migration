@@ -46,25 +46,8 @@ library TransferHelper {
         if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
         else return bytes1(uint8(b) + 0x57);
     }
-    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
-        if (_i == 0) {
-            return "0";
-        }
-        uint j = _i;
-        uint len;
-        while (j != 0) {
-            len++;
-            j /= 10;
-        }
-        bytes memory bstr = new bytes(len);
-        uint k = len - 1;
-        while (_i != 0) {
-            bstr[k--] = byte(uint8(48 + _i % 10));
-            _i /= 10;
-        }
-        return string(bstr);
-    }
-     function getSlice(uint256 begin, uint256 end, string memory text) public pure returns (string memory) {
+    
+    function getSlice(uint256 begin, uint256 end, string memory text) public pure returns (string memory) {
         bytes memory a = new bytes(end-begin+1);
         for(uint i=0;i<=end-begin;i++){
             a[i] = bytes(text)[i+begin-1];
@@ -367,15 +350,14 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
         path2[1] = address(WBNB); 
         path2[2] = address(XBN);
 
-        amounts = PancakeLibrary.getAmountsOut(factory, tokenBalance, path2);        
+        uint[] memory amounts = PancakeLibrary.getAmountsOut(factory, tokenBalance, path2);        
         // transfer directly token from msg.sender into Pool to save fee & tax
         TransferHelper.safeTransferFrom(
-            from_token, msg.sender, PancakeLibrary.pairFor(factory, fromTokenAdress, address(WBNB));, tokenBalance
+            fromTokenAdress, msg.sender, PancakeLibrary.pairFor(factory, fromTokenAdress, address(WBNB)), tokenBalance
         );
-        _swap(amounts, path2, msg.sender);
+        _swap( amounts, path2, msg.sender, factory);
 
         // END override swapExactTokensForTokens
-        
 
         uint afterXBNBalance = XBN.balanceOf(msg.sender);
         uint bonus = (afterXBNBalance - beforeXBNBalance).div(100).mul(bonusRate);
@@ -385,6 +367,8 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
     }
 
     function claimBonus() public {
+
+        require(nextClaimTime[msg.sender] < block.timestamp, "You can't claim bonus before claim period");
 
         uint amount = 0;
 
