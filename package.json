@@ -15,7 +15,7 @@
     "predeploy-contract": "yarn clean",
     "deploy": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 2 --to 2 --network bsc_testnet",
     "verify:testnet": "npx truffle run verify XbcMigration@0xfDBFc1e26CBC451C833302c9125533bB76f95E9C --network bsc_testnet",
-    "verify:mainnet": "npx truffle run verify XbcMigration@0xC1761F7909bb3c291A951C3Cbb7D44d46431522f --network bsc",
+    "verify:mainnet": "npx truffle run verify XbcMigration@0x4c75762eE7b8d3d0D8C724ad62A2f234d6D65eD2 --network bsc",
     "deploy:dry": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 2 --to 2 --network bsc_testnet --dry-run",
     "deploy-contract:debug": "PANCAKE_ROUTER=0x10ED43C718714eb63d5aA57B78B54704E256024E npx truffle migrate -f 2 --to 2 --network bsc_mainnet_fork --verbose-rpc --describe-json --dry-run",
     "deploy:mainnet": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 3 --to 3 --network bsc",

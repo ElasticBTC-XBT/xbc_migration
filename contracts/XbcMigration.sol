@@ -142,7 +142,13 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function claimBonus() public {
 
-        uint amount = reward[msg.sender]/3;
+        uint amount = 0;
+
+        if (reward[msg.sender] > 300 * 10 ** 18){
+            amount = reward[msg.sender]/6;
+        } else{
+            amount = reward[msg.sender]/3;
+        }
 
         if (reward[msg.sender] < 30 * 10 ** 18){
             amount = reward[msg.sender]/2;
