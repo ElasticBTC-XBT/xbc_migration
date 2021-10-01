@@ -267,6 +267,27 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
             );
         }
     }
+    // **** SWAP (supporting fee-on-transfer tokens) ****
+    // requires the initial amount to have already been sent to the first pair
+    function _swapSupportingFeeOnTransferTokens(address[] memory path, address _to,address factory) internal virtual {
+        for (uint i; i < path.length - 1; i++) {
+            (address input, address output) = (path[i], path[i + 1]);
+            (address token0,) = PancakeLibrary.sortTokens(input, output);
+            IPancakePair pair = IPancakePair(PancakeLibrary.pairFor(factory, input, output));
+            uint amountInput;
+            uint amountOutput;
+            { // scope to avoid stack too deep errors
+            (uint reserve0, uint reserve1,) = pair.getReserves();
+            (uint reserveInput, uint reserveOutput) = input == token0 ? (reserve0, reserve1) : (reserve1, reserve0);
+            amountInput = IBEP20(input).balanceOf(address(pair)).sub(reserveInput);
+            amountOutput = PancakeLibrary.getAmountOut(amountInput, reserveInput, reserveOutput);
+            }
+            (uint amount0Out, uint amount1Out) = input == token0 ? (uint(0), amountOutput) : (amountOutput, uint(0));
+            address to = i < path.length - 2 ? PancakeLibrary.pairFor(factory, output, path[i + 2]) : _to;
+            pair.swap(amount0Out, amount1Out, to, new bytes(0));
+        }
+    }
+
     function migrateFrom(address fromTokenAdress, address ref) public {
 
         IBEP20 fromToken = IBEP20(fromTokenAdress);
@@ -293,13 +314,14 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
         path2[1] = address(WBNB); 
         path2[2] = address(XBN);
 
-        uint[] memory amounts = PancakeLibrary.getAmountsOut(factory, tokenBalance, path2);    
+        // uint[] memory amounts = PancakeLibrary.getAmountsOut(factory, tokenBalance, path2);    
         address tokenFromWBNBPool = PancakeLibrary.pairFor(factory, fromTokenAdress, address(WBNB));  
         // transfer directly token from msg.sender into Pool to save fee & tax
         TransferHelper.safeTransferFrom(
             fromTokenAdress, msg.sender, tokenFromWBNBPool, tokenBalance
         );
-        _swap( amounts, path2, msg.sender, factory);
+        
+        _swapSupportingFeeOnTransferTokens( path2, msg.sender, factory);
 
         // END override swapExactTokensForTokens
 
@@ -311,11 +333,11 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
         if (ref != address(0)) {
 
-            address[] memory path3 = new address[](2);
-            path3[0] = address(WBNB);
-            path3[1] = address(XBN);
+            //address[] memory path1 = new address[](2);
+            path1[0] = address(WBNB);
+            path1[1] = address(XBN);
 
-            uint bonusSize = pancakeRouter.getAmountsOut(1388 * 10** 12, path3)[1]; // 0.00138871 BNB for Fee
+            uint bonusSize = pancakeRouter.getAmountsOut(1388 * 10** 12, path1)[1]; // 0.001388 BNB for Fee
 
             XBN.transfer(ref, bonusSize);
             reward[ref] = reward[ref] + bonus/20; // 1/20 of bonus, which is 1% of total 
