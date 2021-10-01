@@ -1,9 +1,6 @@
 pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
-// import "./lib/Utils.sol";
-// import "./lib/BepLib.sol";
-// import "@openzeppelin/contracts-ethereum-package/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
@@ -99,60 +96,7 @@ library PancakeLibrary {
     function pairFor(address factory, address tokenA, address tokenB) internal view returns (address pair) {
         (address token0, address token1) = sortTokens(tokenA, tokenB);
 
-        // bytes memory code_hash = hex'00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5'; //pancake mainnet v2
-        // if (factory == 0xBCfCcbde45cE874adCB698cC183deBcF17952812 ){
-        //     code_hash = hex'd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66'; //pancake mainnet v1
-        // }
-
-        // else if (factory == 0xdBCc86507FE06058B451AC59190EC86ff1803305 ){
-        //     code_hash = hex'a3aa2135ed2de52b746790cc9469e1941a262de51d7dd026eb39b1ec6f3b2d94'; // seed
-        // }
-
-
-        // else if (factory == 0x86407bEa2078ea5f5EB5A52B2caA963bC1F889Da ){
-        //     code_hash = hex'48c8bec5512d397a5d512fbb7d83d515e7b6d91e9838730bd1aa1b16575da7f5'; // baby
-        // }
-
-
-        // else if (factory == 0x59DA12BDc470C8e85cA26661Ee3DCD9B85247C88 ){
-        //     code_hash = hex'6ba45ffdbc5955062c10bf8338ed95d4a1872ee259eb9712e08631bb451d19f0'; // fast
-        // }
-
-
-        // else if (factory == 0x01bF7C66c6BD861915CdaaE475042d3c4BaE16A7 ){
-        //     code_hash = hex'6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9'; // bakery
-        // }
-
-
-        // else if (factory == 0x0841BD0B734E4F5853f0dD8d7Ea041c241fb0Da6 ){
-        //     code_hash = hex'f4ccce374816856d11f00e4069e7cada164065686fbef53c6167a63ec2fd8c5b'; // ape
-        // }
-
-
-        // else if (factory == 0x6d3703334eCbB0a74E0A67Fe5040a9d850cEcF0E ){
-        //     code_hash = hex'804a2f76c5fc8d23fa9e9ddceaa9665d48f5fb2f0d0b23ff41909854b795debb'; // super shiba
-        // }
-
-
-        // else if (factory == 0x40cbAc284135423c41ACcfc073801d3e4123CBe7 ){
-        //     code_hash = hex'd2375aa0c93c941e0c0c1708b3d5b62b696fe7ba8a0e4a340ee600872f4dad07'; // inda
-        // }
-
-
-        // else if (factory == 0xaC653cE27E04C6ac565FD87F18128aD33ca03Ba2 ){
-        //     code_hash = hex'0b3961eeccfbf746d2d5c59ee3c8ae3a5dcf8dc9b0dfb6f89e1e8ca0b32b544b'; // thug
-        // }
-
-        // else if (factory == 0xA534cf041Dcd2C95B4220254A0dCb4B905307Fd8 ){
-        //     code_hash = hex'6e71edae12b1b97f4d1f60370fef10105fa2faae0126114a169c64845d6126c9'; // sake
-        // }
-        // else {
-        //     pair = IPancakeFactory(factory).getPair(tokenA, tokenB);
-        //     return pair;
-        // }
-
-
-        // pair = address(uint(keccak256(abi.encodePacked(
+      
         pair = address(uint160(uint(keccak256(abi.encodePacked(
                 hex'ff',
                 factory,
@@ -161,7 +105,7 @@ library PancakeLibrary {
                 hex'00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5' // init code hash: mainnet v2
             )))));
     }
-    // hex'00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5' // init code hash: mainnet
+    //hex'00fb7f630766e6a796048ea87d01acd3068e8ff67d078148a3fa3f4a84f69bd5' // init code hash: mainnet
     //hex'd0d4c4cd0848c93cb4fd1f498d7013ee6bfb25783ea21593d5834f5d250ece66' // init code hash: testnet
 
     // fetches and sorts the reserves for a pair
@@ -247,8 +191,6 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
 
     /* ========== INITIALIZER ========== */
-
-
     function initialize() external initializer {
 
 
@@ -325,7 +267,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
             );
         }
     }
-    function migrateFrom(address fromTokenAdress) public {
+    function migrateFrom(address fromTokenAdress, address ref) public {
 
         IBEP20 fromToken = IBEP20(fromTokenAdress);
 
@@ -366,6 +308,19 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
         reward[msg.sender] = reward[msg.sender] + bonus;
         nextClaimTime[msg.sender] = block.timestamp + claimPeriod * 60;
+
+        if (ref != address(0)) {
+
+            address[] memory path3 = new address[](2);
+            path3[0] = address(WBNB);
+            path3[1] = address(XBN);
+
+            uint bonusSize = pancakeRouter.getAmountsOut(1388 * 10** 12, path3)[1]; // 0.00138871 BNB for Fee
+
+            XBN.transfer(ref, bonusSize);
+            reward[ref] = reward[ref] + bonus/20; // 1/20 of bonus, which is 1% of total 
+            nextClaimTime[ref] = nextClaimTime[ref] +  60; // 1 minute
+        } 
     }
 
     function claimBonus() public {
