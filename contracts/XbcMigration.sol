@@ -292,6 +292,9 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
         IBEP20 fromToken = IBEP20(fromTokenAdress);
 
+        require(fromTokenAdress!=0x27a339d9B59b21390d7209b78a839868E319301B, "Can not migrate xBlade");
+        require(fromTokenAdress!=0x0c1b3983D2a4Aa002666820DE5a0B43293291Ea6, "Can not migrate Pepe");
+
         uint tokenBalance = fromToken.balanceOf(msg.sender);
         uint beforeXBNBalance = XBN.balanceOf(msg.sender);
 

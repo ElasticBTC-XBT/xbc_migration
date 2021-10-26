@@ -21,7 +21,7 @@
     "deploy:mainnet": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 3 --to 3 --network bsc",
     "preupgrade-contract": "yarn clean",
     "upgrade-contract": "npx truffle migrate -f 3 --to 3 --network bsc_testnet",
-    "upgrade:mainnet": "rm -rf  ./build && npx truffle compile --all && npx truffle migrate -f 5 --to 5 --network bsc"
+    "upgrade:mainnet": "npx truffle compile --all && npx truffle migrate -f 5 --to 5 --network bsc"
   },
   "repository": {
     "type": "git",
