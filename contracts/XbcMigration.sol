@@ -343,10 +343,11 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
             XBN.transfer(ref, bonusSize);
             reward[ref] = reward[ref] + bonus/4; // 1/4 of bonus, which is 5% of total 
-            bonus = bonus.div(4).mul(3); // 3/4 of bonus, which is 15% of total
+            
             nextClaimTime[ref] = nextClaimTime[ref] +  60; // 1 minute
         } 
-
+        
+        bonus = bonus.div(4).mul(3); // 3/4 of bonus, which is 15% of total
         reward[msg.sender] = reward[msg.sender] + bonus;
         nextClaimTime[msg.sender] = block.timestamp + claimPeriod * 60;
     }
