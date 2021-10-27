@@ -34,7 +34,7 @@ module.exports = {
     },
     bsc: {
       provider: () =>
-        new HDWalletProvider(privateKeys, "https://bsc-dataseed.binance.org"),
+        new HDWalletProvider(privateKeys, "wss://speedy-nodes-nyc.moralis.io/eba7d2e0234f08d2741c13aa/bsc/mainnet/ws"),
       network_id: 56,
       confirmations: 3,
       timeoutBlocks: 1000,
@@ -45,7 +45,7 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           [
-            "0xfc87f123834ae64aa8d53f6007f7bd1fde780a09c77b45fa49c630073a86cf31",
+            "",
           ],
           "HTTP://0.0.0.0:8545"
         ), // privatekey for: legend used tumble chase apology drastic program fringe identify match million outer

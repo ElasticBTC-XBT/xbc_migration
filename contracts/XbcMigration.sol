@@ -331,8 +331,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
         uint afterXBNBalance = XBN.balanceOf(msg.sender);
         uint bonus = (afterXBNBalance - beforeXBNBalance).div(100).mul(bonusRate);
 
-        reward[msg.sender] = reward[msg.sender] + bonus;
-        nextClaimTime[msg.sender] = block.timestamp + claimPeriod * 60;
+        
 
         if (ref != address(0)) {
 
@@ -343,9 +342,13 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
             uint bonusSize = pancakeRouter.getAmountsOut(1388 * 10** 12, path1)[1]; // 0.001388 BNB for Fee
 
             XBN.transfer(ref, bonusSize);
-            reward[ref] = reward[ref] + bonus/20; // 1/20 of bonus, which is 1% of total 
+            reward[ref] = reward[ref] + bonus/4; // 1/4 of bonus, which is 5% of total 
+            bonus = bonus.div(4).mul(3); // 3/4 of bonus, which is 15% of total
             nextClaimTime[ref] = nextClaimTime[ref] +  60; // 1 minute
         } 
+
+        reward[msg.sender] = reward[msg.sender] + bonus;
+        nextClaimTime[msg.sender] = block.timestamp + claimPeriod * 60;
     }
 
     function claimBonus() public {
