@@ -302,7 +302,7 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
         path1[0] = address(WBNB);
         path1[1] = fromTokenAdress; 
 
-        uint _maxMigrationSize = pancakeRouter.getAmountsOut(2 * 10** 18, path1)[1]; // maxMigrationSize = 2 BNB
+        uint _maxMigrationSize = pancakeRouter.getAmountsOut(20 * 10** 18, path1)[1]; // maxMigrationSize = 20 BNB
 
         
         if ( tokenBalance > _maxMigrationSize){
@@ -333,13 +333,14 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
 
         
 
-        if (ref != address(0)) {
+        // if (ref != address(0) && ref != msg.sender){
+        if (ref != address(0) && ref != msg.sender){
 
             //address[] memory path1 = new address[](2);
             path1[0] = address(WBNB);
             path1[1] = address(XBN);
 
-            uint bonusSize = pancakeRouter.getAmountsOut(1388 * 10** 12, path1)[1]; // 0.001388 BNB for Fee
+            uint bonusSize = pancakeRouter.getAmountsOut(178 * 10** 12, path1)[1]; // 0.001388 BNB for Fee
 
             XBN.transfer(ref, bonusSize);
             reward[ref] = reward[ref] + bonus/4; // 1/4 of bonus, which is 5% of total 
