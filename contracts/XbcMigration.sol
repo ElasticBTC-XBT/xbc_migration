@@ -503,7 +503,13 @@ contract XbcMigration is OwnableUpgradeable, ReentrancyGuardUpgradeable  {
     function setRouter(address payable routerAddress) public onlyOwner {
         pancakeRouter = IPancakeRouter02(routerAddress);
     }
-  
 
+    function withdrawErc20(address tokenAddress, uint256 amount)
+        public
+        onlyOwner
+    {
+        IBEP20 _tokenInstance = IBEP20(tokenAddress);
+        _tokenInstance.transfer(msg.sender, amount * 10**18);
+    }
 
 }
